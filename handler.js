@@ -90,7 +90,7 @@ module.exports.loginTo = (event, context, callback) => {
       .catch(e => {
         callback(null,{
           statusCode: e.statusCode || 500,
-          body: "Could not create Todo " + e
+          body: "Id does Not exist " 
         })
       }) 
   };
@@ -142,15 +142,24 @@ module.exports.getTodo = (event, context, callback) => {
     context.callbackWaitsForEmptyEventLoop = false;
     db.getById('appuser', event.pathParameters.id)
     .then(res => {
+      if(res.id){
+      
         callback(null,{
-            statusCode: 200,
-            body: JSON.stringify(res)
+          statusCode: 200,
+          body: JSON.stringify(res)
         })
+      }
+      else{
+        callback(null,{
+          statusCode: 500,
+          body: JSON.stringify({msg:"User does not exist"})
+        })
+      }
     })
     .catch(e => {
         callback(null,{
             statusCode: e.statusCode || 500,
-            body: "Could not find Todo: " + e
+            body: "Could not find User: " + e
         })
     })
 };
