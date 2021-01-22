@@ -1,0 +1,77 @@
+
+service: idontknow
+
+app: my-first-app
+org: shweta0213
+
+
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: 20201221
+
+
+
+
+
+functions:
+  token:
+    handler: auth.auth
+
+             
+  getTodo:
+    handler: handler.getTodo
+    events:
+     - http:
+         path: AppUser/{id}
+         method: get
+         cors: true
+          
+  getAllTodos:
+    handler: handler.getAllTodos
+    events:
+     - http:
+         path: AppUser
+         method: get
+         cors: true
+ 
+  createTodo:
+    handler: handler.createTodo
+    events:
+      - http:
+          path: AppUser
+          method: post
+          cors: true
+  login:
+    handler: handler.loginTo
+    events:
+      - http:
+          path: login
+          method: post
+          cors: true
+   
+              
+  updateTodo:
+    handler: handler.updateTodo
+    events:
+      - http:
+          path: AppUser
+          method: put
+          cors: true
+          authorizer: token
+          
+  deleteTodo:
+    handler: handler.deleteTodo
+    events:
+      - http:
+          path: AppUser/{id}
+          method: delete
+          cors: true    
+
+  
+          
+plugins:
+  - serverless-offline
+         
